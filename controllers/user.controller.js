@@ -5,20 +5,21 @@ const { signupValidation, loginValidation } = require("../validation/user.valida
 
 const signup = async (req, res) => {
   try {
-    // const { name, email, password } = req.body;
-
+    const { name, email, password } = req.body;
+    console.log(req.body, "Nehaaaaaaaaaaa")
     const { error } = signupValidation.validate(req.body);
-
+    console.log(error, "kkkkkkkkkkkkkkkkk")
     if (error) {
+      console.log(error, "ttttttttttttttt")
       return res.status(400).json({
         success: false,
         message: error.details[0].message,
       });
     }
-    const email = req.body.email;
+    // const email = req.body.email;
     // check email already exists
     const existingUser = await User.findOne({ email });
-
+    console.log(existingUser, "YYYYYYYYYYYY")
     if (existingUser) {
       return res.status(400).json({
         success: false,

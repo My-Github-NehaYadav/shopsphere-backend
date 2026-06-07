@@ -8,9 +8,9 @@ const signup = async (req, res) => {
     const { name, email, password } = req.body;
     console.log(req.body, "Nehaaaaaaaaaaa")
     const { error } = signupValidation.validate(req.body);
-    console.log(error, "kkkkkkkkkkkkkkkkk")
+    console.log(error, "kkkkkkkkkk")
     if (error) {
-      console.log(error, "ttttttttttttttt")
+      console.log(error, "ttttttttt")
       return res.status(400).json({
         success: false,
         message: error.details[0].message,
@@ -19,7 +19,7 @@ const signup = async (req, res) => {
     // const email = req.body.email;
     // check email already exists
     const existingUser = await User.findOne({ email });
-    console.log(existingUser, "YYYYYYYYYYYY")
+    console.log(existingUser, "YYYYYYY")
     if (existingUser) {
       return res.status(400).json({
         success: false,

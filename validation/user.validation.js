@@ -11,4 +11,15 @@ const loginValidation = Joi.object({
   password: Joi.string().required(),
 });
 
-module.exports = { signupValidation, loginValidation };
+
+const productValidation = Joi.object({
+  name: Joi.string().required(),
+  price: Joi.number().required(),
+  category: Joi.string().required(),
+  description: Joi.string().optional(),
+  image: Joi.string().optional(),
+});
+
+module.exports = { signupValidation, loginValidation, productValidation };
+
+

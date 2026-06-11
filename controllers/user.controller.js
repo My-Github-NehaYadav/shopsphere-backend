@@ -1,16 +1,19 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { signupValidation, loginValidation } = require("../validation/user.validation");
+const { signupValidation, loginValidation, productValidation } = require("../validation/user.validation");
+const Product = require("../models/product.model");
+
+
+
+
 
 const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    console.log(req.body, "Nehaaaaaaaaaaa")
     const { error } = signupValidation.validate(req.body);
-    console.log(error, "kkkkkkkkkk")
+
     if (error) {
-      console.log(error, "ttttttttt")
       return res.status(400).json({
         success: false,
         message: error.details[0].message,
@@ -19,7 +22,6 @@ const signup = async (req, res) => {
     // const email = req.body.email;
     // check email already exists
     const existingUser = await User.findOne({ email });
-    console.log(existingUser, "YYYYYYY")
     if (existingUser) {
       return res.status(400).json({
         success: false,
@@ -63,7 +65,6 @@ const login = async (req, res) => {
         message: error.details[0].message,
       });
     }
-
     // // Check user exists
     // const user = await User.findOne({ email });
     // if (!user) {
@@ -118,7 +119,58 @@ const login = async (req, res) => {
 
 }
 
+
+const createProduct = async (req, res) => {
+  const { error } = productValidation.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.details[0].message,
+    });
+  }
+
+  try {
+    const product = await Product.create(req.body);
+
+    return res.status(201).json({
+      success: true,
+      message: "Product created successfully",
+      data: product,
+    });
+  } catch (error) {
+    console.log("Create Product Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+
+const getProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+
+    return res.status(200).json({
+      success: true,
+      message: "Products fetched successfully",
+      data: products,
+    });
+  } catch (error) {
+    console.log("Get Products Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
 module.exports = {
   signup,
   login,
+  createProduct,
+  getProducts
 };

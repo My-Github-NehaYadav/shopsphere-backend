@@ -1,12 +1,18 @@
 const express = require('express');
-const { request } = require('node:http');
 const app = express()
 const dotenv = require("dotenv").config();
 const port = process.env.PORT;
-const connectDB = require("./config/db");
-connectDB();
+
 const cors = require("cors");
 app.use(cors());
+
+/* works when I add this */
+const dns = require("dns").promises;
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
+/* db connection done */
+const connectDB = require("./config/db");
+connectDB();
 
 app.use(express.json());
 const authRoutes = require("./routes/user.routes");

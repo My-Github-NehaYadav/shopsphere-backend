@@ -58,8 +58,7 @@ const getProducts = async (req, res) => {
 const getProductById = async (req, res) => {
   const _id = req.params.id;
   try {
-    const product = await Product.findById(_id);
-
+    const product = await Product.findById(_id).populate("category", "categoryName");
     if (!product) {
       return res.status(404).json({
         success: false,
